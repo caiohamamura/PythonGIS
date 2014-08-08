@@ -1,0 +1,99 @@
+layer=iface.legendInterface().layers()[0]
+feats=layer.selectedFeatures()
+feat=feats[0]
+feat2=feats[1]
+geom=feat.geometry()
+centroid = geom.centroid()
+geom2=feat2.geometry()
+
+
+debug = iface.legendInterface().layers()[1]
+provider = debug.dataProvider()
+setup1='''
+def getClosestPoints(geom1, geom2):
+    polygon1 = geom1.asPolygon()[0]
+    polygon2 = geom2.asPolygon()[0]
+    for i in polygon1:
+        for j in polygon2:
+            dist = i.sqrDist(j)
+            if minDist == None:
+                point2 = j
+                point1 = i
+                minDist = dist
+            elif (dist < minDist):
+                point2 = j
+                point1 = i
+                minDist = dist
+    return [point1, point2]
+'''
+
+setup2='''
+def getClosestPoints(geom1, geom2):
+    polygon1 = geom1.asPolygon()[0]
+    polygon2 = geom2.asPolygon()[0]
+    index1 = QgsSpatialIndex()
+    minDist = None
+    id=0
+    for i in polygon1:
+        feat = QgsFeature()
+        feat.setGeometry(QgsGeometry.fromPoint(i))
+        feat.setFeatureId(id)
+        index1.insertFeature(feat)
+        id+=1
+    for i in polygon2:
+        pt2 = i
+        pt1 = polygon1[index1.nearestNeighbor(i,1)[0]]
+        dist = pt2.sqrDist(pt1)
+        if minDist == None:
+            point2 = pt2
+            point1 = pt1
+            minDist = dist
+        elif (dist < minDist):
+            point2 = pt2
+            point1 = pt1
+            minDist = dist
+    return [point1, point2]
+'''
+
+
+for i in getClosestPoints(geom, geom2):
+    featAdd = QgsFeature()
+    featAdd.setGeometry(QgsGeometry().fromPoint(i))
+    provider.addFeatures([featAdd])
+
+
+from itertools import imap
+layer = iface.legendInterface().layers()[0]
+index = QgsSpatialIndex()
+for i in layer.getFeatures():a=index.insertFeature(i)
+
+dists=[i.geometry().centroid().asPoint().sqrDist(QgsPoint(0,0)) for i in layer.getFeatures()]
+id[dists.index(min(dists))]
+
+
+feat = layer.selectedFeatures()[0]
+closestPoint=feat.geometry().closestVertex(QgsPoint(0,0))[0]
+feat2 = QgsFeature()
+geom = QgsGeometry()
+geom = geom.fromPoint(closestPoint)
+feat2.setGeometry(geom)
+geom.asPoint()
+provider.addFeatures([feat2])
+
+
+
+def getClosestVertex(geom, point):
+    polygon = geom.asPolygon()
+    if len(polygon)>0:
+        polygon = polygon[0]
+        dists=[i.sqrDist(point) for i in polygon]
+        return polygon[dists.index(min(dists))]
+    
+feats = layer.getFeatures()
+for f in feats:
+    closestPoint = f.geometry().closestVertex(QgsPoint(0,0))[0]
+    if closestPoint == getClosestVertex(f.geometry(), QgsPoint(0,0)):
+            pass
+    else: 
+        print f.id()
+        break
