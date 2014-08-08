@@ -130,10 +130,12 @@ def main(FID,do,lastIndex):
         result = useNumpy(pt1,pt2, minDist)
         savePoint(str([row[0],minFID,minDist,result[0][0],result[0][1],result[1][0],result[1][1],result[3] if len(result) == 4 else ''])[1:-1].replace(',',';')+'\n', do)
 
-do = int(sys.argv[1])
-lastIndex = 0
-totalIndexes = 287684
-nProcesses = 5
-lists = [[49408, 53471],[172608, 174874],[174874, 177140],[177140, 179406],[287684, totalIndexes+2]]
-doFID = lists[do]
-main(doFID, do, lastIndex)
+
+if __name__='__main__':
+    do = int(sys.argv[1])
+    lastIndex = 0
+    totalIndexes = 287684
+    nProcesses = 5
+    lists = [[49408, 53471],[172608, 174874],[174874, 177140],[177140, 179406],[287684, totalIndexes+2]]
+    doFID = lists[do]
+    main(doFID, do, lastIndex)
