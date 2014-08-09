@@ -2,11 +2,13 @@
 
 def a(i):
     ### CLIP ###
-
-    # meso = arcpy.mapping.Layer("D:/Desktop/IPEF/28-05-2014/meso2005 - Cópia ("+str(i)+").shp")
+# for i in xrange(15):
+    # meso = arcpy.mapping.Layer("D:/Desktop/IPEF/28-05-2014/meso2005.shp")
     # arcpy.SelectLayerByAttribute_management(meso,"NEW_SELECTION", "FID="+str(i))
-    # print str(i)+": Clipping"
-    # arcpy.Clip_analysis("D:/Desktop/IPEF/28-05-2014/buffer/Frags - Cópia ("+str(i)+").shp",meso,"D:/Desktop/IPEF/28-05-2014/buffer/FragsCent_"+str(i)+".shp")
+    # print str(i)+": Copying"
+    # arcpy.CopyFeatures_management(meso, "D:/Desktop/IPEF/28-05-2014/meso2005_"+str(i)+".shp")
+    print str(i)+": Clipping"
+    arcpy.Clip_analysis("D:/Desktop/IPEF/28-05-2014/buffer/BuffD"+str(i)+".shp","D:/Desktop/IPEF/28-05-2014/meso2005_"+str(i)+".shp","D:/Desktop/IPEF/28-05-2014/buffer/FragsCent_"+str(i)+".shp")
     
     ### BUFFER ###
     # if i > 0: 
@@ -35,8 +37,20 @@ def a(i):
     # arcpy.CalculateField_management("D:/Desktop/IPEF/28-05-2014/buffer/BuffU"+str(i)+".shp", "BACIA", "str(!X!)+str(!Y!)","PYTHON")
     
     ###DISSOLVE###
-    print str(i)+": dissolving"
-    arcpy.Dissolve_management("D:/Desktop/IPEF/28-05-2014/buffer/BuffU"+str(i)+".shp","D:/Desktop/IPEF/28-05-2014/buffer/BuffD"+str(i)+".shp","BACIA","FID COUNT;AREA MAX;AREA MIN;AREA MEAN;PXfg_500 MAX;PXfg_500 MIN;PXfg_500 MEAN;forma MAX;forma MIN;forma MEAN","SINGLE_PART","DISSOLVE_LINES")
+    # print str(i)+": dissolving"
+    # arcpy.Dissolve_management("D:/Desktop/IPEF/28-05-2014/buffer/BuffU"+str(i)+".shp","D:/Desktop/IPEF/28-05-2014/buffer/BuffD"+str(i)+".shp","BACIA","FID COUNT;AREA MAX;AREA MIN;AREA MEAN;PXfg_500 MAX;PXfg_500 MIN;PXfg_500 MEAN;forma MAX;forma MIN;forma MEAN","SINGLE_PART","DISSOLVE_LINES")
+    
+    ###ADD FIELD###
+    # print str(i)+": adding"
+    # arcpy.AddField_management("D:/Desktop/IPEF/28-05-2014/buffer/BuffU"+str(i)+".shp","MAX_AREA", "DOUBLE")
+    # arcpy.AddField_management("D:/Desktop/IPEF/28-05-2014/buffer/BuffU"+str(i)+".shp","MIN_AREA", "DOUBLE")
+    # arcpy.AddField_management("D:/Desktop/IPEF/28-05-2014/buffer/BuffU"+str(i)+".shp","MEAN_AREA", "DOUBLE")
+    # arcpy.AddField_management("D:/Desktop/IPEF/28-05-2014/buffer/BuffU"+str(i)+".shp","MAX_PXfg_5", "DOUBLE")
+    # arcpy.AddField_management("D:/Desktop/IPEF/28-05-2014/buffer/BuffU"+str(i)+".shp","MIN_PXfg_5", "DOUBLE")
+    # arcpy.AddField_management("D:/Desktop/IPEF/28-05-2014/buffer/BuffU"+str(i)+".shp","MEAN_PXfg_", "DOUBLE")
+    # arcpy.AddField_management("D:/Desktop/IPEF/28-05-2014/buffer/BuffU"+str(i)+".shp","MAX_forma", "DOUBLE")
+    # arcpy.AddField_management("D:/Desktop/IPEF/28-05-2014/buffer/BuffU"+str(i)+".shp","MIN_forma", "DOUBLE")
+    # arcpy.AddField_management("D:/Desktop/IPEF/28-05-2014/buffer/BuffU"+str(i)+".shp","MEAN_forma", "DOUBLE")
 
 def main():
     pool = multiprocessing.Pool(5)
