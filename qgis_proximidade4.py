@@ -11,15 +11,15 @@ def savePoint(num, FID):
 
 def loadSet():
     lineSet = set()
-    if 'lineSet'+str(FID)+'.txt' in os.listdir('D:/'):
-        file = open('D:/lineSet'+str(FID)+'.txt','r')
+    if 'lineSet.txt' in os.listdir('D:/'):
+        file = open('D:/lineSet.txt','r')
         for i in file:
             lineSet.add(eval(i))
     return lineSet
 
 def saveSet(num, FID):
     a=open("D:/lineSet"+str(FID)+".txt","a")
-    a.write(str(num))
+    a.write(str(num)+'\n')
     a.close()
     return
 
@@ -90,6 +90,8 @@ def doit(do=5,min=0,max=287685):
                 point2 = i
                 point1 = closestSegment[1]
         savePoint(str([int(id),int(nearestFeature),dist,point1[0],point1[1],point2[0],point2[1]])[1:-1].replace(',',';').replace(' ','')+'\n', do)
+        saveSet('[frozenset(['+str(id)+','+str(nearestFeature)+'])]',do)
+        print id
 
 #0 57536 115073 172610 230147 287685
-doit(4,230147,287685)
+doit(1,57536,115073)
