@@ -1,14 +1,19 @@
 ﻿import multiprocessing, arcpy
 
 def a(i):
+    if i not in [0,14]:return
     ### CLIP ###
 # for i in xrange(15):
     # meso = arcpy.mapping.Layer("D:/Desktop/IPEF/28-05-2014/meso2005.shp")
     # arcpy.SelectLayerByAttribute_management(meso,"NEW_SELECTION", "FID="+str(i))
     # print str(i)+": Copying"
     # arcpy.CopyFeatures_management(meso, "D:/Desktop/IPEF/28-05-2014/meso2005_"+str(i)+".shp")
-    print str(i)+": Clipping"
-    arcpy.Clip_analysis("D:/Desktop/IPEF/28-05-2014/buffer/BuffD"+str(i)+".shp","D:/Desktop/IPEF/28-05-2014/meso2005_"+str(i)+".shp","D:/Desktop/IPEF/28-05-2014/buffer/FragsCent_"+str(i)+".shp")
+    # print str(i)+": Clipping"
+    # arcpy.Clip_analysis("D:/Desktop/IPEF/28-05-2014/buffer/BuffD"+str(i)+".shp","D:/Desktop/IPEF/28-05-2014/meso2005_"+str(i)+".shp","D:/Desktop/IPEF/28-05-2014/buffer/FragsCent_"+str(i)+".shp")
+    
+    ###ERASE###
+    print str(i)+": erasing"
+    arcpy.Erase_analysis("D:/Desktop/IPEF/28-05-2014/meso2005_"+str(i)+".shp","D:/Desktop/IPEF/28-05-2014/buffer/BuffD_"+str(i)+".shp","D:/Desktop/IPEF/28-05-2014/buffer/Buff_E"+str(i)+".shp")
     
     ### BUFFER ###
     # if i > 0: 
@@ -42,7 +47,12 @@ def a(i):
     
     ###ADD FIELD###
     # print str(i)+": adding"
-    # arcpy.AddField_management("D:/Desktop/IPEF/28-05-2014/buffer/BuffU"+str(i)+".shp","MAX_AREA", "DOUBLE")
+    # print str(i)+": adding"
+    # arcpy.AddField_management("D:/Desktop/IPEF/28-05-2014/buffer/BuffD"+str(i)+".shp","ENTORFRAG", "TEXT","","",13)
+    # arcpy.AddField_management("D:/Desktop/IPEF/28-05-2014/buffer/Buff_E"+str(i)+".shp","ENTORFRAG", "TEXT","","",13)
+    # print str(i)+": calculating"
+    # arcpy.CalculateField_management("D:/Desktop/IPEF/28-05-2014/buffer/Buff_E"+str(i)+".shp","ENTORFRAG", '"FORAENTORNO"')
+    # arcpy.CalculateField_management("D:/Desktop/IPEF/28-05-2014/buffer/BuffD"+str(i)+".shp","ENTORFRAG", '"ENTORNO"')
     # arcpy.AddField_management("D:/Desktop/IPEF/28-05-2014/buffer/BuffU"+str(i)+".shp","MIN_AREA", "DOUBLE")
     # arcpy.AddField_management("D:/Desktop/IPEF/28-05-2014/buffer/BuffU"+str(i)+".shp","MEAN_AREA", "DOUBLE")
     # arcpy.AddField_management("D:/Desktop/IPEF/28-05-2014/buffer/BuffU"+str(i)+".shp","MAX_PXfg_5", "DOUBLE")

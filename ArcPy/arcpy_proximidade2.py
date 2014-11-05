@@ -64,7 +64,7 @@ def useNumpy(pt1, pt2, minDist):
     minPtDist=65534
     result = None
     #Get tiled and repeated arrays to get all possible pairs of points
-    for i in range(0,size1+2,chunksize/size2):
+    for i in xrange(0,size1+2,chunksize/size2):
         '''
         Throw the arrays into nearestPoint function
         Every pair of nearest points will be either:
@@ -78,7 +78,7 @@ def useNumpy(pt1, pt2, minDist):
             minPtDist = result1[2]
             if result[2] <= minDist:
                 return result
-    for i in range(0,size2+1,chunksize/size1):
+    for i in xrange(0,size2+1,chunksize/size1):
         '''
         Throw the arrays into nearestPoint function
         Every pair of nearest points will be either:

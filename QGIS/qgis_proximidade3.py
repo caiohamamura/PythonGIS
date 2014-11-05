@@ -1,28 +1,14 @@
 from PyQt4 import QtGui
 from PyQt4.QtCore import QVariant
-import gc, os
-
+import gc
 gc.enable()
 def savePoint(num, FID):
     a=open("D:/points"+str(FID)+".txt","a")
     a.write(str(num))
-    a.close()
     return
 
-def loadSet():
-    lineSet = set()
-    if 'lineSet.txt' in os.listdir('D:/'):
-        file = open('D:/lineSet.txt','r')
-        for i in file:
-            lineSet.add(eval(i))
-    return lineSet
-
-def saveSet(num, FID):
-    a=open("D:/lineSet"+str(FID)+".txt","a")
-    a.write(str(num)+'\n')
-    a.close()
-    return
-
+def load
+    
 def doit(do=5,min=0,max=287685):
     layer = iface.legendInterface().layers()[0]
     outputLayer = QgsVectorFileWriter('D:/Desktop/IPEF/28-05-2014/Proximidade4.shp', None, QgsFields(), QGis.WKBLineString, layer.crs())
@@ -43,7 +29,7 @@ def doit(do=5,min=0,max=287685):
     n=0
     total=len(feature_dict)+0.0
     printat = int(round(total/200.0))
-    lineSet = loadSet()
+    lineSet = set()
     for f in feature_dict.values():
         processEvents()
         geom = f.geometry()
@@ -57,7 +43,7 @@ def doit(do=5,min=0,max=287685):
         for i in nearestFeatures: 
             if i != id:
                 nearestFeature = i
-                break
+                break;
         geom2 = feature_dict[nearestFeature].geometry()
         dist=geom.distance(geom2)
         rect = geom.boundingBox()
@@ -70,11 +56,6 @@ def doit(do=5,min=0,max=287685):
                 geom2 = geom3
                 dist = dist2 
                 nearestFeature = i
-        if lineSet.issuperset([frozenset([id, nearestFeature])]):
-            print 'Already exists'
-            continue
-        else:
-            lineSet.add(frozenset([id,nearestFeature]))
         for i in geom.asPolygon()[0]:
             closestSegment = geom2.closestSegmentWithContext(i)
             dist2 = closestSegment[0]
@@ -90,8 +71,6 @@ def doit(do=5,min=0,max=287685):
                 point2 = i
                 point1 = closestSegment[1]
         savePoint(str([int(id),int(nearestFeature),dist,point1[0],point1[1],point2[0],point2[1]])[1:-1].replace(',',';').replace(' ','')+'\n', do)
-        saveSet('[frozenset(['+str(id)+','+str(nearestFeature)+'])]',do)
-        print id
 
 #0 57536 115073 172610 230147 287685
-doit(1,57536,115073)
+doit(4,230147,287685)

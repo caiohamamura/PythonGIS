@@ -8,7 +8,8 @@ a = csv.reader(b)
 a.next()
 ln = arcpy.Polyline
 pt = arcpy.Point
-cursor = arcpy.da.InsertCursor('D:/linha.shp', ['SHAPE@'])
+cursor = arcpy.da.InsertCursor('D:/linha2.shp', ['SHAPE@'])
 for row in a:
-    linha = ln(arcpy.Array([pt(*map(float,row[4:6])),pt(*map(float,row[6:8]))]))
+    print row[0]
+    linha = ln(arcpy.Array([pt(*map(float,row[3:5])),pt(*map(float,row[5:7]))]))
     cursor.insertRow((linha,))
